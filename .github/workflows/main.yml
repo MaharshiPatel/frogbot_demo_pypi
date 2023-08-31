@@ -25,4 +25,15 @@ jobs:
         run: |
           jf pipc --server-id-resolve=$SERVER_ID --repo-resolve=$REPO
           # Build the python project
-          jf rt pipi -r requirements.txt --module=$MODULE_NAME
+          jf pip install -r requirements.txt --module=$MODULE_NAME --build-name $BUILD_NAME --build-number $BUILD_NUMBER
+      - name: Publish build
+        run: |
+           # Collect and store environment variables in the build-info
+           jfrog rt bce
+           # Collect and store VCS details in the build-info
+           jfrog rt bag
+           # Publish the build-info to Artifactory
+           jfrog rt bp
+           # Scan the published build-info with Xray
+           jfrog rt bs --build-name $BUILD_NAME --build-number $BUILD_NUMBER
+        if: always()
