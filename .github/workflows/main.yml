@@ -1,0 +1,38 @@
+name: python-demo
+
+on: [push]
+
+jobs:
+  build:
+
+    runs-on: ubuntu-latest
+    env:
+      JF_ARTIFACTORY_1: ${{ secrets.JF_ARTIFACTORY_SECRET_1 }}
+      MODULE_NAME: "jfrog-python-example"
+      SERVER_ID: "rtsaas"
+      REPO: "auth-python-virtual"
+    steps:
+      - name: Setup JFrog CLI
+        uses: jfrog/setup-jfrog-cli@v3.4.0
+      - name: Run Python build
+        run: |
+          jf pipc --server-id-resolve=$SERVER_ID --repo-resolve=$REPO
+
+          # Build the python project
+          jf pipi -r requirements.txt --module=$MODULE_NAME
+
+      - name: Create and upload
+        run: |
+          sh "python3 setup.py sdist bdist_wheel"
+          jf rt u dist/ $REPO --module=$MODULE_NAME --props=stage=dev"
+
+      - name: Collect Metadata and publish
+        run: |
+          # Collect and store environment variables in the build-info
+         jfrog rt bce
+         # Collect and store VCS details in the build-info
+         jfrog rt bag
+         # Publish the build-info to Artifactory
+         jfrog rt bp
+
+          
