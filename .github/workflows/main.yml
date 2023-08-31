@@ -8,7 +8,7 @@ jobs:
     runs-on: ubuntu-latest
     strategy:
       matrix:
-        python-version: ["3.7", "3.8", "3.9", "3.10", "3.11"]
+        python-version: ["3.10", "3.11"]
     env:
       JF_URL: ${{ secrets.JF_URL }}
       JF_ACCESS_TOKEN: ${{ secrets.JF_ACCESS_TOKEN }}
@@ -34,6 +34,7 @@ jobs:
           jf pip install -r requirements.txt --module=$MODULE_NAME 
           # Package the project, create distribution archives (tar.gz and whl):
           python3 setup.py sdist bdist_wheel
+          jf rt u dist/ $REPO/pypi/ --module=$MODULE_NAME 
       - name: Publish build
         run: |
            # Collect and store environment variables in the build-info
