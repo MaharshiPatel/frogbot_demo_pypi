@@ -19,7 +19,7 @@ jobs:
           jf pipc --server-id-resolve=$SERVER_ID --repo-resolve=$REPO
 
           # Build the python project
-          jf pipi -r requirements.txt --module=$MODULE_NAME
+          jf pipi -r requirements.txt
       - name: Collect Metadata and publish
         run: |
           # Collect and store environment variables in the build-info
