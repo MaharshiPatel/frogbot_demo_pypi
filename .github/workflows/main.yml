@@ -21,11 +21,6 @@ jobs:
           # Build the python project
           jf pipi -r requirements.txt --module=$MODULE_NAME
 
-      - name: Create and upload
-        run: |
-          sh "python3 setup.py sdist bdist_wheel"
-          #jf rt u dist/ $REPO --module=$MODULE_NAME
-
       - name: Collect Metadata and publish
         run: |
           # Collect and store environment variables in the build-info
