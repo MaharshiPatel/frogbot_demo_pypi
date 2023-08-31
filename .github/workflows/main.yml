@@ -7,13 +7,18 @@ jobs:
 
     runs-on: ubuntu-latest
     env:
-      JF_ARTIFACTORY_1: ${{ secrets.JF_ARTIFACTORY_SECRET_1 }}
+      JF_URL: ${{ secrets.JF_URL }}
+      JF_ACCESS_TOKEN: ${{ secrets.JF_ACCESS_TOKEN }}
       MODULE_NAME: "jfrog-python-example"
       SERVER_ID: "rtsaas"
       REPO: "auth-python-virtual"
     steps:
-      - name: Setup JFrog CLI
+      - name: Checkout Code
+        uses: actions/checkout@v2
+      - name: Setup JFrog CLI 
         uses: jfrog/setup-jfrog-cli@v3.4.0
+      - name: JFrog CLI config
+        run: jf c add $SERVER_ID --url=$JF_URL --access-token=$JF_ACCESS_TOKEN --interactive=false
       - name: Ping JFrog CLI
         run: jf rt ping --server-id=$SERVER_ID
       - name: Run Python build and publish
