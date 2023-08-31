@@ -6,6 +6,9 @@ jobs:
   build:
 
     runs-on: ubuntu-latest
+    strategy:
+      matrix:
+        python-version: ["3.7", "3.8", "3.9", "3.10", "3.11"]
     env:
       JF_URL: ${{ secrets.JF_URL }}
       JF_ACCESS_TOKEN: ${{ secrets.JF_ACCESS_TOKEN }}
@@ -13,8 +16,11 @@ jobs:
       SERVER_ID: "rtsaas"
       REPO: "auth-python-virtual"
     steps:
-      - name: Checkout Code
-        uses: actions/checkout@v2
+      - uses: actions/checkout@v3
+      - name: Set up Python ${{ matrix.python-version }}
+        uses: actions/setup-python@v4
+        with:
+          python-version: ${{ matrix.python-version }}
       - name: Setup JFrog CLI 
         uses: jfrog/setup-jfrog-cli@v3.4.0
       - name: JFrog CLI config
@@ -26,6 +32,8 @@ jobs:
           jf pipc --server-id-resolve=$SERVER_ID --repo-resolve=$REPO
           # Build the python project
           jf pip install -r requirements.txt --module=$MODULE_NAME 
+          # Package the project, create distribution archives (tar.gz and whl):
+          python3 setup.py sdist bdist_wheel
       - name: Publish build
         run: |
            # Collect and store environment variables in the build-info
