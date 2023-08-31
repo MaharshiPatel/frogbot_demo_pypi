@@ -15,7 +15,7 @@ jobs:
       - name: Setup JFrog CLI
         uses: jfrog/setup-jfrog-cli@v3.4.0
       - name: Ping JFrog CLI
-        run: jf rt ping
+        run: jf rt ping --server-id=$SERVER_ID
       - name: Run Python build and publish
         run: |
           jf pipc --server-id-resolve=$SERVER_ID --repo-resolve=$REPO
