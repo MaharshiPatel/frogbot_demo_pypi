@@ -24,7 +24,7 @@ jobs:
       - name: Create and upload
         run: |
           sh "python3 setup.py sdist bdist_wheel"
-          jf rt u dist/ $REPO --module=$MODULE_NAME --props=stage=dev"
+          jf rt u dist/ $REPO --module=$MODULE_NAME --props=stage=dev
 
       - name: Collect Metadata and publish
         run: |
