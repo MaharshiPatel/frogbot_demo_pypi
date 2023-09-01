@@ -12,7 +12,7 @@ jobs:
     env:
       JF_URL: ${{ secrets.JF_URL }}
       JF_ACCESS_TOKEN: ${{ secrets.JF_ACCESS_TOKEN }}
-      MODULE_NAME: "jfrog-python-example"
+      MODULE_NAME: "pyyaml_demo"
       SERVER_ID: "rtsaas"
       REPO: "auth-python-virtual"
     steps:
