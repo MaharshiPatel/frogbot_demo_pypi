@@ -5,7 +5,6 @@ setup(name='pyyaml_demo',
       description='Contextual analysis example using PyYAML',
       author='JFrog',
       license='MIT',
-      packages=['pyyaml_demo'],
       install_requires=[
           'PyYAML==5.2',
       ])
